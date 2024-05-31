@@ -17,11 +17,10 @@ ENV CASC_JENKINS_CONFIG=/usr/share/jenkins/ref/casc.yaml
 
 # Install Docker CLI
 USER root
-RUN apk update && apk add --no-cache docker-cli
-RUN apk add --no-cache sudo
+RUN apk update && apk add --no-cache docker-cli sudo
 
-# Add jenkins user to docker group
-RUN addgroup -S docker && addgroup jenkins docker
+# Add jenkins user to docker group with correct group ID
+RUN addgroup -g 994 -S docker && addgroup jenkins docker
 
 # Allow Jenkins to run Docker without sudo
 RUN echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers
