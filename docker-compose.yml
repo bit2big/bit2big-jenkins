@@ -13,12 +13,12 @@ services:
       - jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
-      - traefik
+      - t2-proxy:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.jenkins.rule=Host(`jenkins.dev.bit2big.com`)"
       - "traefik.http.routers.jenkins.entrypoints=web"
-      - "traefik.docker.network=traefik"
+      - "traefik.docker.network=t2-proxy:"
 
 volumes:
   jenkins_home:
