@@ -9,7 +9,7 @@ cd bit2big-jenkins
 # Create the Dockerfile
 cat <<EOF > Dockerfile
 # Dockerfile
-FROM jenkins/jenkins:latest-alpine
+FROM jenkins/jenkins:alpine
 
 LABEL maintainer="Michael Kiberu <mail@kipya.com>"
 
