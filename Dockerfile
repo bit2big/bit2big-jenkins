@@ -16,8 +16,12 @@ COPY jenkins/casc.yaml /usr/share/jenkins/ref/casc.yaml
 # Setting environment variables
 ENV CASC_JENKINS_CONFIG=/usr/share/jenkins/ref/casc.yaml
 
-
+# Install Docker CLI
 USER root
-RUN apk add --no-cache sudo docker docker-cli
+RUN apk update && apk add --no-cache docker-cli
+
+# Allow Jenkins to run Docker without sudo
 RUN echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers
+
+# Switch back to the Jenkins user
 USER jenkins
