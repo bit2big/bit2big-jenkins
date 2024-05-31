@@ -18,7 +18,6 @@ matrix-auth
 pam-auth
 ldap
 mailer
-theme-dark
 folders
 antisamy-markup-formatter
 build-timeout
