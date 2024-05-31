@@ -1,0 +1,28 @@
+services:
+  jenkins:
+    build: .
+    container_name: jenkins
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    environment:
+      - JENKINS_ADMIN_ID=${JENKINS_ADMIN_ID}
+      - JENKINS_ADMIN_PASSWORD=${JENKINS_ADMIN_PASSWORD}
+      - CASC_JENKINS_CONFIG=/usr/share/jenkins/ref/casc.yaml
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jenkins.rule=Host(`jenkins.dev.bit2big.com`)"
+      - "traefik.http.routers.jenkins.entrypoints=web"
+      - "traefik.docker.network=traefik"
+
+volumes:
+  jenkins_home:
+
+networks:
+  t2-proxy:
+    external: true
