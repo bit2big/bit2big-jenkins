@@ -1,8 +1,24 @@
-# plugins.txt
 docker-workflow
 github
 workflow-aggregator
 credentials-binding
 ssh-agent
-email-ext
 configuration-as-code
+email-ext
+timestamper
+ws-cleanup
+ant
+gradle
+github-branch-source
+pipeline-github-lib
+pipeline-stage-view
+git
+ssh-slaves
+matrix-auth
+pam-auth
+ldap
+mailer
+theme-dark
+folders
+antisamy-markup-formatter
+build-timeout
