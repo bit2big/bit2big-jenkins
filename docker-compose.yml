@@ -16,11 +16,10 @@ services:
       - t2-proxy
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.jenkins.rule=Host:jenkins.dev.bit2big.com"
+      - "traefik.http.routers.frontend.rule=Host:jenkins.dev.bit2big.com"
       - "traefik.http.routers.frontend.entrypoints=websecure"
       - "traefik.http.routers.frontend.tls.certresolver=letsencrypt"
-      - "traefik.http.services.frontend.loadbalancer.server.port=8080"
-
+      - "traefik.http.services.frontend.loadbalancer.server.port=8080" 
 volumes:
   jenkins_home:
 
