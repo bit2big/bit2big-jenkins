@@ -1,4 +1,4 @@
-FROM jenkins/jenkins:alpine
+FROM jenkins/jenkins:alpine3.20-jdk21
 
 LABEL maintainer="Michael Kiberu <mail@kipya.com>"
 
