@@ -9,7 +9,7 @@ cd bit2big-jenkins
 # Create the Dockerfile
 cat <<EOF > Dockerfile
 # Dockerfile
-FROM jenkins/jenkins:lts
+FROM jenkins/jenkins:latest-alpine
 
 LABEL maintainer="Michael Kiberu <mail@kipya.com>"
 
@@ -26,9 +26,9 @@ COPY jenkins/casc.yaml /usr/share/jenkins/ref/casc.yaml
 # Setting environment variables
 ENV CASC_JENKINS_CONFIG=/usr/share/jenkins/ref/casc.yaml
 
-# Security best practices
+
 USER root
-RUN apt-get update && apt-get install -y sudo
+RUN apk add --no-cache sudo
 RUN echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers
 USER jenkins
 EOF
