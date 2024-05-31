@@ -18,6 +18,6 @@ ENV CASC_JENKINS_CONFIG=/usr/share/jenkins/ref/casc.yaml
 
 
 USER root
-RUN apk add --no-cache sudo docker
+RUN apk add --no-cache sudo docker docker-cli
 RUN echo "jenkins ALL=NOPASSWD: ALL" >> /etc/sudoers
 USER jenkins
