@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "bit2big/jenkins:latest"
+        DOCKER_IMAGE = "reg.kipya.com/kipya/jenkins:latest"
     }
 
     stages {
@@ -26,9 +26,9 @@ pipeline {
 
         stage('Push Docker Image') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'harbor-credentials', usernameVariable: 'HARBOR_USERNAME', passwordVariable: 'HARBOR_PASSWORD')]) {
                     script {
-                        docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials') {
+                        docker.withRegistry('https://reg.kipya.com', 'harbor-credentials') {
                             dockerImage.push()
                         }
                     }
@@ -39,7 +39,7 @@ pipeline {
         stage('Cleanup') {
             steps {
                 script {
-                    docker.imagePrune()
+                    sh 'docker system prune -f'
                 }
             }
         }
