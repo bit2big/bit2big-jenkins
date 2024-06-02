@@ -1,14 +1,10 @@
 pipeline {
     agent any
 
-    parameters {
-        string(name: 'DOCKER_REGISTRY', defaultValue: 'reg.kipya.com', description: 'Docker Registry URL')
-        string(name: 'DOCKER_REPOSITORY', defaultValue: 'kipya/jenkins', description: 'Docker Repository')
-        string(name: 'BRANCH_NAME', defaultValue: 'main', description: 'Git Branch to Build')
-    }
-
     environment {
-        DOCKER_IMAGE = "${params.DOCKER_REGISTRY}/${params.DOCKER_REPOSITORY}:latest"
+        REGISTRY = "reg.kipya.com"
+        REPOSITORY = "kipya/jenkins"
+        LATEST_TAG = "latest"
     }
 
     stages {
@@ -16,11 +12,12 @@ pipeline {
             steps {
                 script {
                     def scmVars = checkout([$class: 'GitSCM', 
-                        branches: [[name: "*/${params.BRANCH_NAME}"]], 
+                        branches: [[name: '*/main']], 
                         doGenerateSubmoduleConfigurations: false, 
                         extensions: [], 
                         userRemoteConfigs: [[url: 'https://github.com/bit2big/bit2big-jenkins.git']]
                     ])
+                    // Get the short commit hash
                     GIT_COMMIT_HASH = scmVars.GIT_COMMIT[0..6]
                 }
             }
@@ -29,10 +26,13 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    def imageTag = "${params.DOCKER_REGISTRY}/${params.DOCKER_REPOSITORY}:${GIT_COMMIT_HASH}"
-                    def latestTag = "${params.DOCKER_REGISTRY}/${params.DOCKER_REPOSITORY}:${LATEST_TAG}"
+                    def imageTag = "${REGISTRY}/${REPOSITORY}:${GIT_COMMIT_HASH}"
+                    def latestTag = "${REGISTRY}/${REPOSITORY}:${LATEST_TAG}"
 
+                    // Build the Docker image with the commit hash tag
                     dockerImage = docker.build(imageTag)
+
+                    // Tag the image with the 'latest' tag
                     dockerImage.tag(latestTag)
                 }
             }
@@ -42,8 +42,11 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'harbor-credentials', usernameVariable: 'HARBOR_USERNAME', passwordVariable: 'HARBOR_PASSWORD')]) {
                     script {
-                        docker.withRegistry("https://${params.DOCKER_REGISTRY}", 'harbor-credentials') {
+                        docker.withRegistry("https://${REGISTRY}", 'harbor-credentials') {
+                            // Push the image with the commit hash tag
                             dockerImage.push("${GIT_COMMIT_HASH}")
+
+                            // Push the image with the 'latest' tag
                             dockerImage.push("${LATEST_TAG}")
                         }
                     }
