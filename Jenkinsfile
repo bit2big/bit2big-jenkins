@@ -12,7 +12,7 @@ pipeline {
                           branches: [[name: '*/main']], 
                           doGenerateSubmoduleConfigurations: false, 
                           extensions: [], 
-                          userRemoteConfigs: [[url: 'https://github.com/your-username/your-repo.git']]])
+                          userRemoteConfigs: [[url: 'https://github.com/bit2big/bit2big-jenkins.git']]])
             }
         }
 
