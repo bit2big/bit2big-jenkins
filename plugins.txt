@@ -20,3 +20,4 @@ ldap
 mailer
 antisamy-markup-formatter
 build-timeout
+blueocean
