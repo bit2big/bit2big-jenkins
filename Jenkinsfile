@@ -39,7 +39,7 @@ pipeline {
         stage('Cleanup') {
             steps {
                 script {
-                    docker.imagePrune()
+                    sh 'docker system prune -f'
                 }
             }
         }
