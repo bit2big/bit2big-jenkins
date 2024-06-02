@@ -2,6 +2,7 @@
 import jenkins.model.*
 import hudson.security.*
 import hudson.security.csrf.*
+import org.jenkinsci.plugins.matrixauth.*
 
 // Get Jenkins instance
 def instance = Jenkins.getInstance()
@@ -24,17 +25,17 @@ strategy.add(Jenkins.ADMINISTER, System.getenv("JENKINS_ADMIN_ID"))
 
 // Grant read-only permissions to the readonly user
 strategy.add(Jenkins.READ, System.getenv("JENKINS_READONLY_ID"))
-strategy.add(Item.READ, System.getenv("JENKINS_READONLY_ID"))
-strategy.add(Item.DISCOVER, System.getenv("JENKINS_READONLY_ID"))
-strategy.add(View.READ, System.getenv("JENKINS_READONLY_ID"))
+strategy.add(hudson.model.Item.READ, System.getenv("JENKINS_READONLY_ID"))
+strategy.add(hudson.model.Item.DISCOVER, System.getenv("JENKINS_READONLY_ID"))
+strategy.add(hudson.model.View.READ, System.getenv("JENKINS_READONLY_ID"))
 
 // Optionally add more granular permissions
 // Allow readonly user to view job details but not build
-strategy.add(Item.BUILD, System.getenv("JENKINS_READONLY_ID"))
-strategy.add(Item.CONFIGURE, System.getenv("JENKINS_READONLY_ID"))
-strategy.add(Item.CREATE, System.getenv("JENKINS_READONLY_ID"))
-strategy.add(Item.DELETE, System.getenv("JENKINS_READONLY_ID"))
-strategy.add(Item.CANCEL, System.getenv("JENKINS_READONLY_ID"))
+strategy.add(hudson.model.Item.BUILD, System.getenv("JENKINS_READONLY_ID"))
+strategy.add(hudson.model.Item.CONFIGURE, System.getenv("JENKINS_READONLY_ID"))
+strategy.add(hudson.model.Item.CREATE, System.getenv("JENKINS_READONLY_ID"))
+strategy.add(hudson.model.Item.DELETE, System.getenv("JENKINS_READONLY_ID"))
+strategy.add(hudson.model.Item.CANCEL, System.getenv("JENKINS_READONLY_ID"))
 
 instance.setAuthorizationStrategy(strategy)
 
