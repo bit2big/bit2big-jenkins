@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "bit2big/jenkins:latest"
+        DOCKER_IMAGE = "reg.kipya.com/kipya/jenkins:latest"
     }
 
     stages {
@@ -12,7 +12,7 @@ pipeline {
                           branches: [[name: '*/main']], 
                           doGenerateSubmoduleConfigurations: false, 
                           extensions: [], 
-                          userRemoteConfigs: [[url: 'https://github.com/bit2big/bit2big-jenkins.git']]])
+                          userRemoteConfigs: [[url: 'https://github.com/your-username/your-repo.git']]])
             }
         }
 
@@ -26,9 +26,9 @@ pipeline {
 
         stage('Push Docker Image') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'harbor-credentials', usernameVariable: 'HARBOR_USERNAME', passwordVariable: 'HARBOR_PASSWORD')]) {
                     script {
-                        docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials') {
+                        docker.withRegistry('https://reg.kipya.com', 'harbor-credentials') {
                             dockerImage.push()
                         }
                     }
